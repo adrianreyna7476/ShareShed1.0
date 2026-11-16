@@ -26,7 +26,7 @@ async function handleLogin(req, res) {
   try {
     const member = await memberService.authenticate(req.body.email, req.body.password);
     req.session.memberId = member.id;
-    res.redirect('/tools');
+    res.redirect(member.role === 'manager' ? '/manager' : '/tools');
   } catch (err) {
     res.status(401).render('login', {
       title: 'Log In',
@@ -43,4 +43,4 @@ function handleLogout(req, res, next) {
   });
 }
 
-module.exports = { showSignup, handleSignup, showLogin, handleLogin, handleLogout };
+module.exports = { showSignup, handleSignup, showLogin, handleLogin, handleLogout };

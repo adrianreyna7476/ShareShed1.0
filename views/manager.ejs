@@ -1,0 +1,156 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h1>Manager Dashboard</h1>
+
+  <div class="stats">
+    <div class="stat"><strong><%= members.length %></strong> members</div>
+    <div class="stat"><strong><%= openLoans.length %></strong> tools out</div>
+    <div class="stat"><strong><%= overdueCount %></strong> overdue</div>
+    <div class="stat"><strong><%= openReports.length %></strong> open damage reports</div>
+  </div>
+
+  <section class="panel">
+    <h2>Open Damage Reports</h2>
+    <% if (openReports.length === 0) { %>
+      <p>No damage reports waiting for review.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Tool</th><th>Member</th><th>Description</th><th>Reported</th><th>Decision</th></tr>
+        </thead>
+        <tbody>
+          <% openReports.forEach(r => { %>
+            <tr>
+              <td><%= r.id %></td>
+              <td><%= getTool(r.toolId).name %></td>
+              <td><%= getMember(r.memberId).fullName %></td>
+              <td><%= r.description %></td>
+              <td><%= r.reportedDate.toLocaleDateString() %></td>
+              <td>
+                <form action="/manager/reports/<%= r.id %>/resolve" method="POST" class="inline-form">
+                  <button type="submit" name="decision" value="confirm" class="button">Confirm</button>
+                  <button type="submit" name="decision" value="deny" class="button button-secondary">Deny</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <h2>Tools Checked Out</h2>
+    <% if (openLoans.length === 0) { %>
+      <p>No tools are checked out.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Member</th><th>Checked out</th><th>Due</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <% openLoans.forEach(l => { %>
+            <tr>
+              <td><%= getTool(l.toolId).name %></td>
+              <td><%= getMember(l.memberId).fullName %></td>
+              <td><%= l.checkoutDate.toLocaleDateString() %></td>
+              <td><%= l.dueDate.toLocaleDateString() %></td>
+              <td><span class="status status-<%= l.status %>"><%= l.status %></span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <h2>Pending Reservations</h2>
+    <% if (pendingReservations.length === 0) { %>
+      <p>No pending reservations.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Member</th><th>Reserved</th><th>Pick up by</th></tr>
+        </thead>
+        <tbody>
+          <% pendingReservations.forEach(r => { %>
+            <tr>
+              <td><%= getTool(r.toolId).name %></td>
+              <td><%= getMember(r.memberId).fullName %></td>
+              <td><%= r.reservedDate.toLocaleDateString() %></td>
+              <td><%= r.pickupBy.toLocaleDateString() %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <h2>Inventory</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Tool</th><th>Category</th><th>Condition</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <% tools.forEach(t => { %>
+          <tr>
+            <td><%= t.id %></td>
+            <td><%= t.name %></td>
+            <td><%= t.category %></td>
+            <td><%= t.condition %></td>
+            <td><span class="status status-<%= t.status %>"><%= t.status %></span></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Registered Members</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th></tr>
+      </thead>
+      <tbody>
+        <% members.forEach(m => { %>
+          <tr>
+            <td><%= m.id %></td>
+            <td><%= m.fullName %></td>
+            <td><%= m.email %></td>
+            <td><%= m.phone %></td>
+            <td><%= m.role %></td>
+            <td><%= m.createdAt.toLocaleDateString() %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <% if (resolvedReports.length > 0) { %>
+    <section class="panel">
+      <h2>Resolved Damage Reports</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Tool</th><th>Member</th><th>Description</th><th>Decision</th><th>Resolved</th></tr>
+        </thead>
+        <tbody>
+          <% resolvedReports.forEach(r => { %>
+            <tr>
+              <td><%= r.id %></td>
+              <td><%= getTool(r.toolId).name %></td>
+              <td><%= getMember(r.memberId).fullName %></td>
+              <td><%= r.description %></td>
+              <td><span class="status status-<%= r.status %>"><%= r.status %></span></td>
+              <td><%= r.resolvedDate.toLocaleDateString() %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

@@ -15,4 +15,16 @@ function requireLogin(req, res, next) {
   next();
 }
 
-module.exports = { attachUser, requireLogin };
+function requireManager(req, res, next) {
+  if (!res.locals.currentUser) {
+    return res.redirect('/login');
+  }
+  if (res.locals.currentUser.role !== 'manager') {
+    const err = new Error('Only managers can view this page.');
+    err.status = 403;
+    return next(err);
+  }
+  next();
+}
+
+module.exports = { attachUser, requireLogin, requireManager };

@@ -74,4 +74,19 @@ async function authenticate(email, password) {
   return member;
 }
 
-module.exports = { Member, registerMember, findByEmail, findById, authenticate, getAllMembers };
+async function createManagerAccount() {
+  const email = 'manager@shareshed.com';
+  if (findByEmail(email)) return;
+  const passwordHash = await bcrypt.hash('manager123', 10);
+  members.push(new Member(nextId++, 'Shed', 'Manager', email, '956-555-0100', passwordHash, 'manager'));
+}
+
+module.exports = {
+  Member,
+  registerMember,
+  findByEmail,
+  findById,
+  authenticate,
+  getAllMembers,
+  createManagerAccount
+};
