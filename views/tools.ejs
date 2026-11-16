@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h1>Tool Catalog</h1>
+
+  <form action="/tools" method="GET" class="filter-form">
+    <label for="category">Category:</label>
+    <select id="category" name="category">
+      <option value="">All</option>
+      <% categories.forEach(cat => { %>
+        <option value="<%= cat %>" <%= cat === selectedCategory ? 'selected' : '' %>><%= cat %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+
+  <div class="tool-grid">
+    <% tools.forEach(tool => { %>
+      <div class="tool-card">
+        <h2><%= tool.name %></h2>
+        <p class="category"><%= tool.category %></p>
+        <p><%= tool.description %></p>
+        <p>Condition: <%= tool.condition %></p>
+        <span class="status status-<%= tool.status %>"><%= tool.status %></span>
+      </div>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

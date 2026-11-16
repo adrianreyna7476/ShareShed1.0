@@ -32,3 +32,84 @@ footer {
   padding: 1rem;
   color: #666;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 0.5rem;
+}
+
+.form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.form button {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #2f4f3a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.error {
+  color: #b00020;
+  font-weight: bold;
+}
+
+.navbar li {
+  color: white;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.filter-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.tool-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.tool-card h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.category {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.status-available { background: #d4edda; color: #155724; }
+.status-reserved { background: #fff3cd; color: #856404; }
+.status-on-loan { background: #cce5ff; color: #004085; }
+.status-under-repair { background: #f8d7da; color: #721c24; }

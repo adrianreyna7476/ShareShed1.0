@@ -1,0 +1,10 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h1>Welcome to ShareShed, <%= member.firstName %>!</h1>
+  <p>Your member ID is <strong>#<%= member.id %></strong>. You can now reserve up to two tools at a time.</p>
+  <a href="/tools">Browse the Tool Catalog</a>
+</main>
+
+<%- include('partials/footer') %>
