@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h1>Return <%= tool.name %></h1>
+  <p>Checked out <%= loan.checkoutDate.toLocaleDateString() %>, due <%= loan.dueDate.toLocaleDateString() %>.</p>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/loans/<%= loan.id %>/return" method="POST" class="form">
+    <p>What condition is the tool in?</p>
+
+    <label class="choice">
+      <input type="radio" name="condition" value="good" checked>
+      No damage
+    </label>
+
+    <label class="choice">
+      <input type="radio" name="condition" value="damaged">
+      Damaged (a manager will review it)
+    </label>
+
+    <label for="description">Describe the damage</label>
+    <textarea id="description" name="description" rows="4" placeholder="Only needed if the tool is damaged"></textarea>
+
+    <button type="submit">Return Tool</button>
+  </form>
+
+  <p><a href="/my-tools">Back to My Tools</a></p>
+</main>
+
+<%- include('partials/footer') %>

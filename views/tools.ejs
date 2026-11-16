@@ -23,9 +23,19 @@
         <p><%= tool.description %></p>
         <p>Condition: <%= tool.condition %></p>
         <span class="status status-<%= tool.status %>"><%= tool.status %></span>
+
+        <% if (tool.isAvailable()) { %>
+          <% if (currentUser) { %>
+            <form action="/tools/<%= tool.id %>/reserve" method="POST" class="card-action">
+              <button type="submit" class="button">Reserve</button>
+            </form>
+          <% } else { %>
+            <p class="card-action"><a href="/login">Log in to reserve</a></p>
+          <% } %>
+        <% } %>
       </div>
     <% }) %>
   </div>
 </main>
 
-<%- include('partials/footer') %>
+<%- include('partials/footer') %>

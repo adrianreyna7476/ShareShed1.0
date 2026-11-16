@@ -1,0 +1,90 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<main>
+  <h1>My Tools</h1>
+  <p>You are holding <strong><%= heldCount %></strong> of <%= holdLimit %> tools.</p>
+
+  <section class="panel">
+    <h2>Reservations</h2>
+    <% if (pendingReservations.length === 0) { %>
+      <p>No reservations. <a href="/tools">Browse the catalog</a> to reserve a tool.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Reserved</th><th>Pick up by</th><th>Check out</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% pendingReservations.forEach(r => { %>
+            <tr>
+              <td><%= getTool(r.toolId).name %></td>
+              <td><%= r.reservedDate.toLocaleDateString() %></td>
+              <td><%= r.pickupBy.toLocaleDateString() %></td>
+              <td>
+                <form action="/reservations/<%= r.id %>/pickup" method="POST" class="inline-form">
+                  <select name="days">
+                    <% dayOptions.forEach(d => { %>
+                      <option value="<%= d %>"><%= d %> day<%= d === 1 ? '' : 's' %></option>
+                    <% }) %>
+                  </select>
+                  <button type="submit" class="button">Check Out</button>
+                </form>
+              </td>
+              <td>
+                <form action="/reservations/<%= r.id %>/cancel" method="POST">
+                  <button type="submit" class="button button-secondary">Cancel</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <h2>Checked Out</h2>
+    <% if (openLoans.length === 0) { %>
+      <p>You don't have any tools checked out.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Checked out</th><th>Due</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% openLoans.forEach(l => { %>
+            <tr>
+              <td><%= getTool(l.toolId).name %></td>
+              <td><%= l.checkoutDate.toLocaleDateString() %></td>
+              <td><%= l.dueDate.toLocaleDateString() %></td>
+              <td><span class="status status-<%= l.status %>"><%= l.status %></span></td>
+              <td><a href="/loans/<%= l.id %>/return" class="button">Return</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+
+  <% if (returnedLoans.length > 0) { %>
+    <section class="panel">
+      <h2>History</h2>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Checked out</th><th>Returned</th></tr>
+        </thead>
+        <tbody>
+          <% returnedLoans.forEach(l => { %>
+            <tr>
+              <td><%= getTool(l.toolId).name %></td>
+              <td><%= l.checkoutDate.toLocaleDateString() %></td>
+              <td><%= l.returnDate.toLocaleDateString() %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

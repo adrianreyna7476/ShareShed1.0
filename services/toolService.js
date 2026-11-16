@@ -11,6 +11,10 @@ class Tool {
   isAvailable() {
     return this.status === 'available';
   }
+
+  setStatus(status) {
+    this.status = status;
+  }
 }
 
 const tools = [
