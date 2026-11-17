@@ -5,6 +5,10 @@
     <li><a href="/about">About</a></li>
     <li><a href="/tools">Tools</a></li>
     <% if (currentUser) { %>
+      <li><a href="/my-tools">My Tools</a></li>
+      <% if (currentUser.role === 'manager') { %>
+        <li><a href="/manager">Manager</a></li>
+      <% } %>
       <li class="greeting">Hi, <%= currentUser.firstName %></li>
       <li>
         <form action="/logout" method="POST">
@@ -17,3 +21,7 @@
     <% } %>
   </ul>
 </nav>
+
+<% if (flash) { %>
+  <p class="flash flash-<%= flash.type %>"><%= flash.text %></p>
+<% } %>
